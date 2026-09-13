@@ -156,9 +156,7 @@ Playwright で 64 件。実物の明るさブロックの記録から切り出�
 
 ## クレジット
 
-- 制作：Irodori team（Art for Well-being ハッカソン）
-- 当事者の視点：チームの障害のある当事者のメンバー
-- 理学療法の視点：チームの理学療法士
+- 制作：Irodori team（Art for Well-being の実践ワークショップで組んだチーム）
 - 効果音：[OtoLogic](https://otologic.jp)（[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.ja)）。Onoma-Pop01/03/04、Onoma-Button-Click01、Onoma-Surprise06、Onoma-Sparkle08/09、Anime_Motion14、Retro_Anime-Jet04 を、無音部分を切り詰めてモノラルに変換し、再生速度を変えて使用している
 - MESH は Sony の製品。本作品は Sony とは関係のない個人・チームの制作物
 
