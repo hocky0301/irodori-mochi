@@ -79,6 +79,45 @@
     #bar .sep { display: none; }
     #bar button { flex: none; white-space: nowrap; }
   }
+  /* 右の列：発表スライドへの入口と、MESH ブロックのかわりのボタン */
+  #side {
+    position: fixed; right: max(12px, env(safe-area-inset-right)); top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    padding: 12px 8px; border-radius: 18px;
+    background: rgba(18, 22, 34, .55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  }
+  #deck-link { display: flex; flex-direction: column; align-items: center; gap: 3px; color: #e6e9f0; text-decoration: none; font-size: 11px; letter-spacing: .02em; }
+  #deck-link svg { width: 44px; height: 32px; display: block; transition: transform .12s ease; }
+  #deck-link:hover svg { transform: translateY(-2px); }
+  #side .rule { width: 36px; height: 1px; background: rgba(255,255,255,.14); }
+  #side .cap { margin: 0 0 -4px; font-size: 10px; color: #9aa3b5; letter-spacing: .04em; white-space: nowrap; }
+  button.vb {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    padding: 0; background: none; border-radius: 0; font-size: 11px; color: #dbe2ee; touch-action: none;
+  }
+  button.vb:hover { background: none; }
+  .vb .body {
+    width: 30px; height: 58px; border-radius: 6px; overflow: hidden; display: flex; flex-direction: column;
+    box-shadow: 0 3px 0 rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.08); transition: transform .08s ease, box-shadow .08s ease;
+  }
+  .vb .top { flex: 1; background: linear-gradient(#3b3b3e, #242426); border-bottom: 1px solid rgba(0,0,0,.35); }
+  .vb .face { flex: 1; display: grid; place-items: center; background: var(--c); }
+  .vb .face svg { width: 18px; height: 18px; display: block; }
+  .vb:active .body, .vb.held .body { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.08); }
+  .vb.held .body { box-shadow: 0 0 0 3px rgba(160,180,255,.5), 0 1px 0 rgba(0,0,0,.45); }
+  #vb-pa { --c: #6682c6; }
+  #vb-bu { --c: #72cf47; }
+  #vb-ac { --c: #72c3e4; }
+  @media (max-width: 600px) {    /* 縦向きのスマホ：下にいる もちの吹き出しと重ならないよう、上に寄せる */
+    #side { top: calc(max(12px, env(safe-area-inset-top)) + 64px); transform: none; }
+  }
+  @media (max-height: 600px) {   /* 横向きのスマホなど：下のバーと重ならないよう、右上に横並び */
+    #side { top: max(8px, env(safe-area-inset-top)); transform: none; flex-direction: row; align-items: flex-end; gap: 8px; padding: 6px 10px; border-radius: 14px; }
+    #side .cap, #side .rule { display: none; }
+    #deck-link svg { width: 34px; height: 25px; }
+    .vb .body { width: 22px; height: 42px; }
+    .vb .face svg { width: 13px; height: 13px; }
+  }
 </style>
 </head>
 <body>
@@ -97,6 +136,26 @@
   <button id="game">あそぶ</button>
   <button id="sound">おと</button>
 </div>
+<nav id="side">
+  <a id="deck-link" href="deck/mochi.html" target="_blank" rel="noopener" title="発表スライドを、別のタブで開く">
+    <svg viewBox="0 0 44 32" aria-hidden="true"><rect x="1" y="1" width="42" height="25" rx="4" fill="#f4f1ea"/><path d="M18.5 7.5v12l10-6z" fill="#e0824f"/><path d="M22 26v4M16 30.5h12" stroke="#f4f1ea" stroke-width="2" stroke-linecap="round"/></svg>
+    発表スライド
+  </a>
+  <div class="rule"></div>
+  <p class="cap">MESHのかわり</p>
+  <button class="vb" id="vb-pa" title="明るさブロックのかわり：おしている あいだ、手を近づけたことになる" aria-label="明るさブロックのかわり">
+    <span class="body"><span class="top"></span><span class="face"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.6" fill="#fff"/><path d="M10 2.2v2M10 15.8v2M2.2 10h2M15.8 10h2M4.5 4.5l1.4 1.4M14.1 14.1l1.4 1.4M4.5 15.5l1.4-1.4M14.1 5.9l1.4-1.4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></span></span>
+    あかるさ
+  </button>
+  <button class="vb" id="vb-bu" title="ボタンブロックのかわり：おすと ロケット" aria-label="ボタンブロックのかわり">
+    <span class="body"><span class="top"></span><span class="face"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.4" fill="none" stroke="#fff" stroke-width="2"/><circle cx="10" cy="10" r="2.6" fill="#fff"/></svg></span></span>
+    ボタン
+  </button>
+  <button class="vb" id="vb-ac" title="動きブロックのかわり：おすと ふったことになる（星がめぐる）" aria-label="動きブロックのかわり">
+    <span class="body"><span class="top"></span><span class="face"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="6.5" y="6.5" width="7" height="7" rx="1.5" fill="#fff"/><path d="M3.6 6c-1.4 2.4-1.4 5.6 0 8M16.4 6c1.4 2.4 1.4 5.6 0 8" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></span></span>
+    うごき
+  </button>
+</nav>
 
 <script>
 (() => {
@@ -1976,6 +2035,70 @@
   document.getElementById('game').onclick = (e) => { toggleGame(); e.currentTarget.blur(); };
   document.getElementById('sound').onclick = (e) => { toggleMute(); e.currentTarget.blur(); };   // フォーカスを外し、スペースでためるときに押し直さない
   paintGameButton();
+
+  // ── 入力：画面の MESH ブロック（ブロックが手元にない人・iPad 用の簡易版）──────
+  // 実物と同じ形のバイト列を onMesh に入れる。ボタン＝1 回押し、うごき＝振る、
+  // あかるさ＝押している間だけ「手を近づけた」近接値を、実物と同じく 1 秒に 20 回送る
+  const virtualState = { PA: newMeshState(), BU: newMeshState(), AC: newMeshState() };
+  const withSum = (bytes) => Uint8Array.from([...bytes, bytes.reduce((a, b) => a + b, 0) & 0xff]);
+  const le16 = (v) => { const u = (Math.round(v) + 65536) % 65536; return [u & 0xff, u >> 8]; };
+  const PA_NEAR = 620, PA_AWAY = 26;              // 実物の記録：手がないとき最も多い値は 26、近づけると最大 671
+  const virtualPA = { near: false, prox: PA_AWAY, at: 0, timer: 0, stopAt: 0 };
+  function virtualIntroGate() {                   // あいさつ中は、画面やキーと同じく、まず あいさつを進める
+    if (intro.on && intro.phase === 'wait') { beginIntro(); return true; }
+    if (intro.on && intro.phase === 'show') { endIntro(); return true; }
+    return false;
+  }
+  function virtualPAFrame() {
+    const now = performance.now(), dt = Math.min(200, now - virtualPA.at);
+    virtualPA.at = now;
+    virtualPA.prox += ((virtualPA.near ? PA_NEAR : PA_AWAY) - virtualPA.prox) * (1 - Math.exp(-dt / 60));   // 手は一瞬では動かないので、なめらかに寄せる
+    onMesh(withSum([0x01, 0x00, 0x00, 0x20, ...le16(virtualPA.prox + (Math.random() - 0.5) * 4), 0x46, 0x00, 0x3a, 0x00, 0x10, 0x00]), 'PA', virtualState.PA);
+    if (!virtualPA.near && now > virtualPA.stopAt) { clearInterval(virtualPA.timer); virtualPA.timer = 0; }
+  }
+  function virtualPAPress() {
+    if (virtualIntroGate()) return false;
+    if (mochiParam !== '0') mochiActive = true;   // 実物の明るさブロックをつないだときと同じく、もちを出す
+    if (!virtualPA.timer) {                       // 送っていなかったら、手がない値から始めて基準値を作る
+      virtualPA.prox = PA_AWAY; virtualPA.at = performance.now();
+      virtualPAFrame(); virtualPAFrame();
+      virtualPA.timer = setInterval(virtualPAFrame, 50);
+    }
+    virtualPA.near = true;
+    virtualPA.at = performance.now() - 50;        // 押した瞬間に 1 通送る（すばやい「ちょん」も取りこぼさない）
+    virtualPAFrame();
+    return true;
+  }
+  function virtualPARelease() {
+    if (!virtualPA.near) return;
+    virtualPA.near = false;
+    virtualPA.stopAt = performance.now() + 1500;  // 離れた値をしばらく送ってから止める（離したことが伝わるように）
+  }
+  const vbPA = document.getElementById('vb-pa');
+  vbPA.addEventListener('pointerdown', (e) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    e.preventDefault();
+    if (!virtualPAPress()) return;
+    try { vbPA.setPointerCapture(e.pointerId); } catch (_) { /* キャプチャ無しでも、window の離す合図で止まる */ }
+    vbPA.classList.add('held');
+  });
+  const vbPAUp = () => { vbPA.classList.remove('held'); virtualPARelease(); vbPA.blur(); };
+  ['pointerup', 'pointercancel', 'lostpointercapture'].forEach((t) => vbPA.addEventListener(t, vbPAUp));
+  window.addEventListener('pointerup', vbPAUp);
+  window.addEventListener('blur', vbPAUp);
+  vbPA.addEventListener('contextmenu', (e) => e.preventDefault());   // 長押しでメニューを出さない
+  document.getElementById('vb-bu').onclick = (e) => {
+    e.currentTarget.blur();
+    if (!virtualIntroGate()) onMesh(withSum([1, 0, 1]), 'BU', virtualState.BU);
+  };
+  document.getElementById('vb-ac').onclick = (e) => {
+    e.currentTarget.blur();
+    const tilt = () => le16((Math.random() - 0.5) * 1200);   // 振った向きを少しばらつかせる（花火の咲く場所がずれる）
+    if (!virtualIntroGate()) onMesh(withSum([1, 1, 0, 0, ...tilt(), ...tilt(), ...le16(1024), 0, 0, 0, 0, 0, 0]), 'AC', virtualState.AC);
+  };
+  document.getElementById('side').addEventListener('keydown', (e) => {   // フォーカスがあるときのスペースは、このボタンを押すだけにする
+    if (e.key === ' ' || e.key === 'Enter') e.stopPropagation();
+  });
 
   // 外から出来事を入れる口（M5・RFID をあとで足すとき用）
   window.irodori = { firework, star, setColor, softClear, onMesh, meshStats, accel,

@@ -8,11 +8,11 @@ Sony の MESH ブロックに手を近づけると、画面の「もち」がむ
 
 ![画面の真ん中に大きなもちが出て「さわってね」と話している](docs/images/mochi-wait.png)
 
-> Irodori is a playful drawing piece built at a 2-day Art for Well-being hackathon. Bring a hand near a Sony MESH brightness block and an on-screen mochi squishes; let go and it flings little mochi that stick to the painting. The same gestures play "Mochi Jump", a no-fail game of charging jumps and catching stars. It runs in the browser as a single page with no network access; MESH blocks connect from desktop Chrome over Web Bluetooth. Without blocks, you can press the mochi with a finger or the mouse. No effects in care settings have been evaluated.
+> Irodori is a playful drawing piece built at a 2-day Art for Well-being hackathon. Bring a hand near a Sony MESH brightness block and an on-screen mochi squishes; let go and it flings little mochi that stick to the painting. The same gestures play "Mochi Jump", a no-fail game of charging jumps and catching stars. It runs in the browser as a single page with no network access; MESH blocks connect from desktop Chrome over Web Bluetooth. Without blocks, you can press the mochi with a finger or the mouse, or use the on-screen stand-ins for the brightness, button and motion blocks. No effects in care settings have been evaluated.
 
 ## 遊び方
 
-ブロックがなくても、**もちを指（マウス）で押す**、**スペースキー**で遊べる。
+ブロックがなくても、**もちを指（マウス）で押す**、**スペースキー**、**画面右の「MESHのかわり」ボタン**で遊べる。画面右の「発表スライド」で、共有会で使ったスライドが別のタブで開く。
 
 | 使うもの | すること | 起きること |
 |---|---|---|
@@ -22,6 +22,7 @@ Sony の MESH ブロックに手を近づけると、画面の「もち」がむ
 | ボタンブロック | 押す | ロケットがゆっくり空へ上がって、花火になる |
 | 指・マウス | もちを押して離す | 明るさブロックと同じ |
 | 〃 | 画面をなぞる | 光る線を描く |
+| 画面右の「MESHのかわり」 | あかるさ を押し続けて離す／ボタン／うごき | それぞれ明るさ・ボタン・動きブロックと同じ。実物と同じ形のバイト列を入力の処理に渡し、あかるさは押している間、近さの値を 1 秒に 20 回送る |
 | 画面下のバー | 「あそぶ」／「おと」 | ゲームと絵を切り替える／音を消す |
 | キーボード | `G` `M` `R` `B` | ゲーム／消音／ロケット／背景 |
 
@@ -150,7 +151,7 @@ npx playwright install chromium
 npm test
 ```
 
-Playwright で 37 件。実物の明るさブロックの記録から切り出した 10.4 秒・210 回ぶん（`tests/fixtures/pa-hand-20260913.json`、近接の状態通知だけで機器の識別情報は含まない）を、記録どおりの時刻に流し直すテストを含む。
+Playwright で 44 件。実物の明るさブロックの記録から切り出した 10.4 秒・210 回ぶん（`tests/fixtures/pa-hand-20260913.json`、近接の状態通知だけで機器の識別情報は含まない）を、記録どおりの時刻に流し直すテストを含む。
 
 ## クレジット
 
