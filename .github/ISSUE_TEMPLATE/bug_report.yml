@@ -1,0 +1,57 @@
+name: 不具合の報告
+description: 操作と起きたことを記録する
+title: '[Bug] '
+body:
+  - type: input
+    id: browser
+    attributes:
+      label: ブラウザとバージョン
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS とバージョン
+    validations:
+      required: true
+  - type: input
+    id: revision
+    attributes:
+      label: アプリのコミットまたは入手日
+  - type: checkboxes
+    id: blocks
+    attributes:
+      label: 使った MESH ブロック
+      options:
+        - label: 動き（AC）
+        - label: ボタン（BU）
+        - label: 明るさ（PA）
+        - label: MESH なし
+  - type: input
+    id: firmware
+    attributes:
+      label: 各ブロックのファームウェア
+      description: 未接続・分からない場合は、そのまま記入する。
+  - type: textarea
+    id: steps
+    attributes:
+      label: 何をしたら何が起きたか
+      description: 再現できる順番で書く。通常画面か、debug=1 かも添える。
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期待したこと
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 診断ログ
+      description: URL に ?debug=1 を付け、「ログを書き出す」で保存した JSON またはパネルの表示を添付する。実機の通知か合成データかを明記する。機器名・IDなどを共有前に確認する。
+  - type: textarea
+    id: media
+    attributes:
+      label: 画面・動画と端末の動きを抑える設定
+      description: 任意。OS の「視差効果を減らす」等が有効だったかも書く。

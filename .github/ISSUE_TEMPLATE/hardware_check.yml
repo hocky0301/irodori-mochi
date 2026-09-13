@@ -1,0 +1,57 @@
+name: 実機で確かめた結果
+description: MESH の実通知と合成データの違いを記録する
+title: '[Hardware] '
+body:
+  - type: input
+    id: environment
+    attributes:
+      label: ブラウザ・OS とそれぞれのバージョン
+    validations:
+      required: true
+  - type: input
+    id: revision
+    attributes:
+      label: アプリのコミット
+    validations:
+      required: true
+  - type: input
+    id: hardware
+    attributes:
+      label: ブロックの種類・ファームウェア・電池
+    validations:
+      required: true
+  - type: textarea
+    id: connection
+    attributes:
+      label: 接続と再接続
+      description: 初回接続、通知受信、切断後の復帰、電源オフ後の挙動を、実際に試した範囲だけ書く。未確認は未確認とする。
+    validations:
+      required: true
+  - type: textarea
+    id: gestures
+    attributes:
+      label: 向き・シェイク・タップ・フリップ
+      description: 1 回振ったときにシェイク通知が何件届いたか、通知間隔、フリップ前後の向き通知の順序、意図しない星の有無を書く。パネルの累計だけで操作回数を推測しない。
+  - type: textarea
+    id: checksum
+    attributes:
+      label: チェックサムの一致
+      description: 通知の種類と件数、一致・不一致の数、該当する生のバイト列を書く。未確認ならそう記す。
+    validations:
+      required: true
+  - type: textarea
+    id: differences
+    attributes:
+      label: 合成データとの違い
+      description: 同じ操作に対応する通知の長さ・内容・順序・間隔、画面の挙動について、観測したことと考察を分ける。
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: debug=1 の JSON ログと画面
+      description: 実機から受信したログを添付する。合成データを混ぜた場合は対象を明記し、機器名・IDなどを共有前に確認する。
+  - type: textarea
+    id: unchecked
+    attributes:
+      label: まだ確かめていないこと

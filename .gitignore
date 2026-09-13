@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+
+# エディタ
+.vscode/
+.idea/
+
+# ローカルの一時物
+*.log
+*.bak*
+node_modules/
+test-results/
+playwright-report/
+.venv/
+__pycache__/
+
+# 秘密情報は置かない（念のため）
+.env
+.env.*
+*.p8
+*.p12
+*.mobileprovision
