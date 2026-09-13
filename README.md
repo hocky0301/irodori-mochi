@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/hocky0301/irodori-mochi/actions/workflows/ci.yml/badge.svg)](https://github.com/hocky0301/irodori-mochi/actions/workflows/ci.yml)
 
-**あそぶ：https://hocky0301.github.io/irodori-mochi/**　／　**もちの発表資料：https://hocky0301.github.io/irodori-mochi/deck/mochi.html**
+**あそぶ：https://hocky0301.github.io/irodori-mochi/**　／　**もちの発表資料：https://hocky0301.github.io/irodori-mochi/deck/mochi.html**　／　**作った過程の記事（Zenn）：https://zenn.dev/hocky3/articles/cb5c2024ba2776**
 
 **Sony の MESH（メッシュ）ブロックを使ったプロジェクト。** MESH の明るさブロックに手を近づけると、画面の「もち」がむにっと潰れて、離すと小さなもちが飛んでいく。同じ手の動きで、ためて跳んで星を集めるゲームにもなる。Art for Well-being のハッカソン（2 日間）で、チームで作った。
 
