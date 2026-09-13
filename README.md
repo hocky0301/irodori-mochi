@@ -4,11 +4,11 @@
 
 **あそぶ：https://hocky0301.github.io/irodori-mochi/**　／　**もちの発表資料：https://hocky0301.github.io/irodori-mochi/deck/mochi.html**
 
-Sony の MESH ブロックに手を近づけると、画面の「もち」がむにっと潰れて、離すと小さなもちが飛んでいく。同じ手の動きで、ためて跳んで星を集めるゲームにもなる。Art for Well-being のハッカソン（2 日間）で、チームで作った。
+**Sony の MESH（メッシュ）ブロックを使ったプロジェクト。** MESH の明るさブロックに手を近づけると、画面の「もち」がむにっと潰れて、離すと小さなもちが飛んでいく。同じ手の動きで、ためて跳んで星を集めるゲームにもなる。Art for Well-being のハッカソン（2 日間）で、チームで作った。
 
 ![画面の真ん中に大きなもちが出て「さわってね」と話している](docs/images/mochi-wait.png)
 
-> Irodori is a playful drawing piece built at a 2-day Art for Well-being hackathon. Bring a hand near a Sony MESH brightness block and an on-screen mochi squishes; let go and it flings little mochi that stick to the painting. The same gestures play "Mochi Jump", a no-fail game of charging jumps and catching stars. It runs in the browser as a single page with no network access; MESH blocks connect from desktop Chrome over Web Bluetooth. Without blocks, you can press the mochi with a finger or the mouse, or use the on-screen stand-ins for the brightness, button and motion blocks. No effects in care settings have been evaluated.
+> Irodori is a project built with Sony MESH blocks: a playful drawing piece made at a 2-day Art for Well-being hackathon, shaped with input from a disabled team member and the team's physical therapist. Bring a hand near a Sony MESH brightness block and an on-screen mochi squishes; let go and it flings little mochi that stick to the painting. The same gestures play "Mochi Jump", a no-fail game of charging jumps and catching stars. It runs in the browser as a single page with no network access; MESH blocks connect from desktop Chrome over Web Bluetooth. Without blocks, you can press the mochi with a finger or the mouse, or use the on-screen stand-ins for the brightness, button and motion blocks. No effects in care settings have been evaluated.
 
 ## 遊び方
 
@@ -54,7 +54,7 @@ Sony の MESH ブロックに手を近づけると、画面の「もち」がむ
 
 ## なぜ作ったか
 
-病室やプレイルームの夜。できることが少ない時間に、手をちょっと動かすだけで遊べるものを考えた。チームの理学療法士のコメントを要約すると、「しんどいから動きたくない、がベースにある。それを、楽しいから気づいたら動いている、にできるとよい」。
+病室やプレイルームの夜。できることが少ない時間に、手をちょっと動かすだけで遊べるものを考えた。チームの障害のある当事者のメンバーと理学療法士の意見を、大きく取り入れている。チームの理学療法士のコメントを要約すると、「しんどいから動きたくない、がベースにある。それを、楽しいから気づいたら動いている、にできるとよい」。
 
 子どもや病室で意味があるかは、まだ何も確かめていない。
 
@@ -157,6 +157,7 @@ Playwright で 64 件。実物の明るさブロックの記録から切り出�
 ## クレジット
 
 - 制作：Irodori team（Art for Well-being ハッカソン）
+- 当事者の視点：チームの障害のある当事者のメンバー
 - 理学療法の視点：チームの理学療法士
 - 効果音：[OtoLogic](https://otologic.jp)（[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.ja)）。Onoma-Pop01/03/04、Onoma-Button-Click01、Onoma-Surprise06、Onoma-Sparkle08/09、Anime_Motion14、Retro_Anime-Jet04 を、無音部分を切り詰めてモノラルに変換し、再生速度を変えて使用している
 - MESH は Sony の製品。本作品は Sony とは関係のない個人・チームの制作物
