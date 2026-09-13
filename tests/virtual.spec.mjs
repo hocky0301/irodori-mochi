@@ -62,7 +62,7 @@ test('V4 the slides button opens the presentation deck in a new tab', async ({ p
   expect((await page.evaluate(() => irodori.getGameState())).on, 'opening the slides does not touch the play screen').toBe(false);
 });
 
-for (const [width, height] of [[375, 812], [812, 375], [1000, 700]]) {
+for (const [width, height] of [[320, 568], [375, 812], [667, 375], [812, 375], [1000, 700]]) {
   test(`V5 at ${width}x${height} the side column fits on screen and does not cover the bottom bar`, async ({ page }) => {
     await page.setViewportSize({ width, height });
     await page.goto('/');
@@ -75,5 +75,18 @@ for (const [width, height] of [[375, 812], [812, 375], [1000, 700]]) {
     const overlaps = side.x < bar.x + bar.width && bar.x < side.x + side.width && side.y < bar.y + bar.height && bar.y < side.y + side.height;
     expect(overlaps).toBe(false);
     for (const id of ['#deck-link', '#vb-pa', '#vb-bu', '#vb-ac']) await expect(page.locator(id)).toBeVisible();
+  });
+}
+
+for (const [width, height] of [[320, 568], [360, 640], [375, 667], [390, 844]]) {
+  test(`V6 at ${width}x${height} the side column stays clear of the mochi's speech bubble`, async ({ page }) => {
+    await page.setViewportSize({ width, height });
+    await page.goto('/?mochi=1');
+    await expect(page.locator('#talk')).toBeVisible({ timeout: 5000 });
+    await page.waitForTimeout(1500);
+    const side = await page.locator('#side').boundingBox();
+    const talk = await page.locator('#talk').boundingBox();
+    const overlaps = side.x < talk.x + talk.width && talk.x < side.x + side.width && side.y < talk.y + talk.height && talk.y < side.y + side.height;
+    expect(overlaps).toBe(false);
   });
 }

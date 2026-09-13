@@ -28,6 +28,39 @@
   }
   #bar.quiet { opacity: .18; }
   #bar:hover { opacity: 1; }
+  /* 「あそぶ」：バーの外に出した金色の丸。描いている間にバーが薄くなっても、これは薄くならない */
+  #game {
+    position: fixed; z-index: 5;
+    right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom));
+    width: 68px; height: 68px; padding: 0; border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    font-size: 11px; font-weight: 700; letter-spacing: .02em; color: #4a2f06;
+    background: radial-gradient(circle at 34% 30%, #fff3d0, #ffb545 55%, #e2892a);
+    box-shadow: 0 6px 20px rgba(226,137,42,.45), 0 0 0 3px rgba(255,255,255,.7);
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  #game:hover { background: radial-gradient(circle at 34% 30%, #fff7e0, #ffc562 55%, #ec9838); }
+  #game:active { transform: scale(.94); }
+  #game svg { width: 26px; height: 26px; display: block; }
+  #game svg[hidden] { display: none; }
+  #game .label { line-height: 1; white-space: nowrap; }
+  #game.playing .label { letter-spacing: 0; }
+  #game.playing {
+    color: #ffffff;
+    background: radial-gradient(circle at 34% 30%, #d9e8ff, #5a80b8 50%, #33507a);
+    box-shadow: 0 6px 20px rgba(51,80,122,.5), 0 0 0 3px rgba(255,255,255,.7);
+  }
+  #game.playing .label { text-shadow: 0 1px 2px rgba(10,25,55,.9), 0 0 1px rgba(10,25,55,.7); }
+  /* 気づいてもらうための光の波。ボタン本体は動かさず（押す位置がずれない）、まわりの輪だけが広がって消える */
+  #game::before { content: ''; position: absolute; inset: -3px; border-radius: 50%; pointer-events: none; }
+  @keyframes game-breathe { 0% { box-shadow: 0 0 0 0 rgba(255,190,90,.55); } 70%, 100% { box-shadow: 0 0 0 16px rgba(255,190,90,0); } }
+  @media (prefers-reduced-motion: no-preference) {
+    #game:not(.settled):not(.playing)::before { animation: game-breathe 2.4s ease-out infinite; }
+  }
+  @media (prefers-reduced-motion: reduce) {   /* 動きを抑える設定では、波を出さず、動かない光の輪だけ */
+    #game:not(.settled):not(.playing)::before { box-shadow: 0 0 0 6px rgba(255,190,90,.45); }
+  }
+  #palette { display: flex; gap: 8px; }
   .sw { width: 30px; height: 30px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; flex: none; }
   .sw.on { border-color: #fff; transform: scale(1.14); }
   .sep { width: 1px; height: 22px; background: rgba(255,255,255,.14); margin: 0 2px; }
@@ -78,6 +111,9 @@
     #palette { flex-basis: 100%; justify-content: center; }
     #bar .sep { display: none; }
     #bar button { flex: none; white-space: nowrap; }
+    #game { width: 62px; height: 62px; bottom: calc(max(16px, env(safe-area-inset-bottom)) + var(--bar-h, 140px) + 10px); }   /* バーのすぐ上の右 */
+    #game svg { width: 22px; height: 22px; }
+    #game .label { font-size: 10px; }
   }
   /* 右の列：発表スライドへの入口と、MESH ブロックのかわりのボタン */
   #side {
@@ -111,12 +147,37 @@
   @media (max-width: 600px) {    /* 縦向きのスマホ：下にいる もちの吹き出しと重ならないよう、上に寄せる */
     #side { top: calc(max(12px, env(safe-area-inset-top)) + 64px); transform: none; }
   }
-  @media (max-height: 600px) {   /* 横向きのスマホなど：下のバーと重ならないよう、右上に横並び */
-    #side { top: max(8px, env(safe-area-inset-top)); transform: none; flex-direction: row; align-items: flex-end; gap: 8px; padding: 6px 10px; border-radius: 14px; }
+  @media (max-width: 600px) and (max-height: 760px) {   /* 小さめのスマホ縦：右の列を小さくして、もちの吹き出しと「あそぶ」に場所をあける */
+    #side { top: calc(max(12px, env(safe-area-inset-top)) + 52px); gap: 6px; padding: 8px 6px; }
+    #side .cap, #side .rule { display: none; }
+    #deck-link, button.vb { font-size: 9px; gap: 2px; }
+    #deck-link svg { width: 34px; height: 25px; }
+    .vb .body { width: 22px; height: 40px; }
+    .vb .face svg { width: 13px; height: 13px; }
+  }
+  @media (max-height: 600px) {   /* 高さが低い画面：右の列を小さく */
+    #side { gap: 6px; padding: 8px 6px; }
     #side .cap, #side .rule { display: none; }
     #deck-link svg { width: 34px; height: 25px; }
     .vb .body { width: 22px; height: 42px; }
     .vb .face svg { width: 13px; height: 13px; }
+  }
+  @media (max-height: 600px) and (orientation: landscape) {   /* 横向きのスマホ：右の列は右上に横並び、「あそぶ」は右下の隅 */
+    #side { top: max(8px, env(safe-area-inset-top)); transform: none; flex-direction: row; align-items: flex-end; gap: 8px; padding: 6px 10px; border-radius: 14px; }
+    #game { width: 54px; height: 54px; bottom: max(10px, env(safe-area-inset-bottom)); }
+    #game svg { width: 20px; height: 20px; }
+    #game .label { font-size: 9px; }
+  }
+  /* バーを中央に置くと右下の「あそぶ」と重なる幅では、「あそぶ」を除いた残りの幅の中央に置く */
+  @media (min-width: 601px) and (max-width: 900px), (max-height: 600px) and (orientation: landscape) {
+    #bar { left: calc((100% - var(--game-area, 94px)) / 2); max-width: calc(100% - var(--game-area, 94px) - 16px); box-sizing: border-box; flex-wrap: wrap; justify-content: center; }
+  }
+  @media (max-height: 600px) and (orientation: landscape) { :root { --game-area: 80px; } }
+  @media (min-width: 601px) and (max-width: 720px), (max-height: 600px) and (orientation: landscape) {   /* せまい横長では、バーの中身を少し小さく */
+    #bar { gap: 7px; padding: 7px 10px; }
+    #palette { gap: 6px; }
+    .sw { width: 26px; height: 26px; }
+    #bar button { font-size: 12px; padding: 7px 10px; }
   }
 </style>
 </head>
@@ -128,14 +189,14 @@
 <div id="credit" hidden>効果音：OtoLogic（CC BY 4.0）</div>
 <div id="talk" hidden><span id="talk-text"></span></div>
 <div id="bar">
-  <div id="palette" style="display:flex;gap:8px"></div>
+  <div id="palette"></div>
   <div class="sep"></div>
   <button id="mesh">MESHをつなぐ</button>
   <button id="mic">こえ</button>
   <button id="clear">けす</button>
-  <button id="game">あそぶ</button>
   <button id="sound">おと</button>
 </div>
+<button id="game"><svg class="ic-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.8l3.05 6.2 6.85 1-4.95 4.8 1.17 6.8L12 17.4l-6.12 3.2 1.17-6.8L2.1 9l6.85-1z" fill="#fff" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/></svg><svg class="ic-back" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M10 5L3 12l7 7M4 12h10a6 6 0 0 1 6 6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="label">あそぶ</span></button>
 <nav id="side">
   <a id="deck-link" href="deck/mochi.html" target="_blank" rel="noopener" title="発表スライドを、別のタブで開く">
     <svg viewBox="0 0 44 32" aria-hidden="true"><rect x="1" y="1" width="42" height="25" rx="4" fill="#f4f1ea"/><path d="M18.5 7.5v12l10-6z" fill="#e0824f"/><path d="M22 26v4M16 30.5h12" stroke="#f4f1ea" stroke-width="2" stroke-linecap="round"/></svg>
@@ -222,7 +283,11 @@
   // ink は「画面の長辺×長辺」の正方形で持ち、縮めない・引き伸ばさない。
   // 画面には左上から画面ぶんだけを等倍で写す（frame の blit）。
   // → iPad を回しても、ウィンドウを全画面にしても、絵は歪まず、はみ出た分も消えない。
+  // スマホ縦で「あそぶ」をバーのすぐ上に置くため、バーの実際の高さを CSS に渡す（折り返しの段数で変わる）
+  const syncBarHeight = () => document.documentElement.style.setProperty('--bar-h', barEl.offsetHeight + 'px');
+  if (window.ResizeObserver) new ResizeObserver(syncBarHeight).observe(barEl);
   function resize() {
+    syncBarHeight();
     const nw = cv.clientWidth, nh = cv.clientHeight;
     if (!nw || !nh) return;                            // 0サイズの瞬間は触らない（絵を失わない）
     const nd = Math.min(window.devicePixelRatio || 1, 2);
@@ -401,6 +466,9 @@
       if (talk.doneAt && nowMs - talk.doneAt > (talk.queue.length ? 1800 : 5000)) {
         talk.line = ''; talk.doneAt = 0; talk.holdUntil = nowMs + 300; talk.lastSpokeAt = nowMs;
       }
+    } else if (!game.hintGiven && !game.on && !talk.queue.length && talk.step >= 1 && talk.step < 4 && nowMs - talk.lastSpokeAt > 18000) {
+      game.hintGiven = true;                        // 押し方の話の途中で 18 秒止まったら、ゲームがあることを 1 度だけ教える
+      speak('みぎしたの きんいろの まるで、ゲームも できるよ。');
     } else if (talk.step >= 4 && nowMs - talk.lastSpokeAt > 30000) {   // ときどき、ひとりごと
       speak(TALK_IDLE[talk.idle++ % TALK_IDLE.length]);
     }
@@ -457,7 +525,7 @@
   }
   function talkOnRelease(kind) {
     if (talk.step === 2) { talk.step = 3; speak('とんだ！ ちいさな もちが、え に のこるよ。', true); speak('こんどは、ながーく おしてみて。'); }
-    else if (talk.step === 3 && (kind === 'long' || kind === 'grip')) { talk.step = 4; speak('わあっ！ いっぱい とんだ。', true); speak('したの「あそぶ」で、ほしを あつめる ゲームも できるよ。'); }
+    else if (talk.step === 3 && (kind === 'long' || kind === 'grip')) { talk.step = 4; speak('わあっ！ いっぱい とんだ。', true); speak('みぎしたの きんいろの まるで、ほしを あつめる ゲームも できるよ。'); game.hintGiven = true; }
     else if (talk.step >= 4 && kind === 'grip') speak('びっくりした！', true);
     if (kind === 'wake') speak('おはよう！', true);
   }
@@ -630,6 +698,7 @@
   const groundY = () => H - Math.max(110, H * 0.16);
   const game = {
     on: new URLSearchParams(location.search).get('game') === '1',
+    hintGiven: false,
     stars: [], flyers: [], dust: [], chain: [], combo: 0, maxCombo: 0, dawnAt: -1e9, popAt: 0, constellations: 0, shootings: 0, maxSounded: false, shakes: 0, nextAt: 0, kiranAt: 0, booms: 0, shakeUntil: 0, score: 0, jumps: 0, airUsed: false, pressId: null, pressAt: 0, lastPredicted: 0, lastApex: 0, dawns: 0,
   };
   if (game.on) mochiActive = true;
@@ -704,9 +773,18 @@
   }
   function paintGameButton() {
     const btn = document.getElementById('game');
-    if (btn) btn.textContent = game.on ? 'えにもどる' : 'あそぶ';
+    if (!btn) return;
+    btn.classList.toggle('playing', game.on);
+    btn.querySelector('.label').textContent = game.on ? 'えにもどる' : 'あそぶ';
+    btn.querySelector('.ic-star').toggleAttribute('hidden', game.on);   // svg には hidden プロパティが無いので、属性で切り替える
+    btn.querySelector('.ic-back').toggleAttribute('hidden', !game.on);
+  }
+  function settleGameButton() {                     // 何かで遊びはじめたら、「あそぶ」のふくらみを止める
+    const btn = document.getElementById('game');
+    if (btn) btn.classList.add('settled');
   }
   function toggleGame() {
+    settleGameButton();
     game.on = !game.on; game.stars.length = 0; game.pressId = null; game.pressAt = 0;
     if (game.on) { mochiBeforeGame = mochiActive; mochiActive = true; game.nextAt = 0; say('もちジャンプ：ためて、はなすと ジャンプ'); speak('ためて、はなすと ジャンプ。てんせんが とぶ たかさ だよ。', true); if (talk.step < 4) talk.step = 4; }
     else {
@@ -1527,7 +1605,7 @@
     if (game.on) { gamePress(e.pointerId); return; }           // ゲーム中は、押して離す＝ためて跳ぶ
     if (mochiActive && !touchPress && Math.hypot((e.clientX - mochi.x) / 1.3, e.clientY - mochi.cy) < mochi.r * 1.1) {   // 指で もちを押す
       touchPress = { id: e.pointerId, at: performance.now() };
-      sound('puni'); talkOnPress(); umu = 0; poke();
+      sound('puni'); talkOnPress(); umu = 0; poke(); settleGameButton();
       return;
     }
     pens.set(e.pointerId, null);
@@ -1535,6 +1613,7 @@
     try { cv.setPointerCapture(e.pointerId); } catch (_) { /* キャプチャ無しで続行 */ }
     penStroke(e.pointerId, e.clientX, e.clientY, e.pressure || 0.5);
     barEl.classList.add('quiet');
+    settleGameButton();
   });
   cv.addEventListener('pointermove', (e) => {
     if (game.on || !pens.has(e.pointerId)) return;
@@ -1567,14 +1646,15 @@
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     if (intro.on && intro.phase === 'wait') { beginIntro(); if (e.key === ' ') e.preventDefault(); return; }
     if (intro.on && intro.phase === 'show') { endIntro(); if (e.key === ' ') e.preventDefault(); return; }   // キーでも あいさつを飛ばす
-    if (/^[1-6]$/.test(e.key)) { setColor(+e.key - 1, 'キー'); return; }
     const code = e.code || '';                     // 日本語入力のままでも効くように、キーの位置（code）でも見る
+    if ((e.key === ' ' || code === 'Space' || e.key === 'Enter') && e.target instanceof HTMLButtonElement) return;   // Tab で選んだボタンは、スペースとエンターで ふつうに押せる
+    if (/^[1-6]$/.test(e.key)) { settleGameButton(); setColor(+e.key - 1, 'キー'); return; }
     if ((e.key === ' ' || code === 'Space') && game.on) { e.preventDefault(); if (!e.repeat) gamePress('key'); return; }
-    if (e.key === ' ') { e.preventDefault(); firework(null, null, PALETTE[colorIndex].h, e.shiftKey); return; }
+    if (e.key === ' ') { e.preventDefault(); settleGameButton(); firework(null, null, PALETTE[colorIndex].h, e.shiftKey); return; }
     if (e.key === 'g' || e.key === 'G' || code === 'KeyG') { if (!e.repeat) toggleGame(); return; }
-    if (e.key === 'r' || e.key === 'R' || code === 'KeyR') { if (!e.repeat) launchRocket(); return; }
-    if (e.key === 'b' || e.key === 'B' || code === 'KeyB') { if (!e.repeat) nextScene(); return; }
-    if (e.key === 's') { star(); return; }
+    if (e.key === 'r' || e.key === 'R' || code === 'KeyR') { if (!e.repeat) { settleGameButton(); launchRocket(); } return; }
+    if (e.key === 'b' || e.key === 'B' || code === 'KeyB') { if (!e.repeat) { settleGameButton(); nextScene(); } return; }
+    if (e.key === 's') { settleGameButton(); star(); return; }
     if (e.key === 'm' || e.key === 'M' || code === 'KeyM') {
       if (e.repeat) return;                         // 押しっぱなしのリピートで、消音と解除が行ったり来たりしない
       toggleMute();
@@ -1585,7 +1665,8 @@
 
   window.addEventListener('blur', () => { if (game.pressId !== null) gameUp(game.pressId); });   // 別の窓に移って、離した合図が来ないとき
   window.addEventListener('keyup', (e) => {
-    if ((e.key === ' ' || e.code === 'Space') && game.on) { e.preventDefault(); gameUp('key'); }   // ボタンにフォーカスがあっても、スペースで押したことにしない
+    if (e.target instanceof HTMLButtonElement && game.pressId !== 'key') return;   // Tab で選んだボタンをスペースで押すのは、邪魔しない
+    if ((e.key === ' ' || e.code === 'Space') && game.on) { e.preventDefault(); gameUp('key'); }
   });
 
   // ── 入力：MESH（Web Bluetooth）────────────────────────────
@@ -1899,6 +1980,7 @@
 
   function onMesh(d, kind, st = directState, block = null) {
     recordMesh(d, kind, st, block, block ? 'notify' : 'direct');
+    settleGameButton();                            // 実物のブロックでも、画面の「MESHのかわり」でも、入力が来たら遊びはじめた
     const now = performance.now();
     // 動きブロック：17バイト [0x01, event, face, -, xL,xH, yL,yH, zL,zH, …, checksum]
     if (kind === 'AC') {
@@ -2059,6 +2141,7 @@
   function virtualPAPress() {
     if (virtualIntroGate()) return false;
     if (mochiParam !== '0') mochiActive = true;   // 実物の明るさブロックをつないだときと同じく、もちを出す
+    settleGameButton();
     if (!virtualPA.timer) {                       // 送っていなかったら、手がない値から始めて基準値を作る
       virtualPA.prox = PA_AWAY; virtualPA.at = performance.now();
       virtualPAFrame(); virtualPAFrame();
@@ -2103,7 +2186,7 @@
   // 外から出来事を入れる口（M5・RFID をあとで足すとき用）
   window.irodori = { firework, star, setColor, softClear, onMesh, meshStats, accel,
     getMotionState: () => ({ reducedMotion, sparkCount: sparks.length, warmth, displayedWarmth }),
-    getGameState: () => ({ on: game.on, score: game.score, jumps: game.jumps, stars: game.stars.length, starYs: game.stars.map((st) => st.y), booms: game.booms, shakes: game.shakes, combo: game.combo, maxCombo: game.maxCombo, constellations: game.constellations, shootings: game.shootings, dawns: game.dawns, airborne: mochi.jy < -2, lastPredicted: game.lastPredicted, lastApex: game.lastApex, mochiX: mochi.x, mochiY: mochi.cy, ground: groundY() }),
+    getGameState: () => ({ on: game.on, hintGiven: game.hintGiven, settled: document.getElementById('game').classList.contains('settled'), score: game.score, jumps: game.jumps, stars: game.stars.length, starYs: game.stars.map((st) => st.y), booms: game.booms, shakes: game.shakes, combo: game.combo, maxCombo: game.maxCombo, constellations: game.constellations, shootings: game.shootings, dawns: game.dawns, airborne: mochi.jy < -2, lastPredicted: game.lastPredicted, lastApex: game.lastApex, mochiX: mochi.x, mochiY: mochi.cy, ground: groundY() }),
     gameSpawn: (x, y, vx, shooting) => spawnStar(x, y, vx, shooting),
     getStrain: () => ({ strain: Boolean(mochi.strain), umu }),
     getIntro: () => ({ on: intro.on, phase: intro.phase }),

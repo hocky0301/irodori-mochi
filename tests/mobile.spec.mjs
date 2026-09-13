@@ -8,7 +8,7 @@ test('M1 a 375px viewport exposes every control, clears a line, and folds diagno
   });
   for (const path of ['/', '/?debug=1']) {
     await page.goto(path);
-    const controls = page.locator('#palette .sw, #bar button');
+    const controls = page.locator('#palette .sw, #bar button, #game');
     await expect(controls).toHaveCount(11);
     for (const control of await controls.all()) {
       await expect(control).toBeVisible();
